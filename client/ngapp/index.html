@@ -8,7 +8,7 @@
     The base allows us to use relative links to resources even when
     this page was served from non-root URL, e.g. '/my/todos'
     -->
-    <base href="/">
+     <!--<base href="/">-->
 
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
@@ -33,8 +33,8 @@
     <div class="header">
       <ul class="navigation">
         <li><a ng-href="/">Home</a></li>
-        <li><a ng-href="/login">Login</a></li>
-        <li><a ng-href="/register">Register</a></li>
+        <li><a ng-href="#/login">Login</a></li>
+        <li><a ng-href="#/register">Register</a></li>
       </ul>
     </div>
 
@@ -47,17 +47,22 @@
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="../bower_components/es5-shim/es5-shim.js"></script>
-    <script src="../bower_components/angular/angular.js"></script>
-    <script src="../bower_components/json3/lib/json3.js"></script>
-    <script src="../bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/json3/lib/json3.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,ngapp,.}) scripts/scripts.js -->
-        <script src="lbclient/browser.bundle.js"></script>
+<!--<script src="lbclient/browser.bundle.js"></script>-->
+<script type="text/javascript" src="scripts/index.js"></script>
+<script src="browser.bundle.js"></script>
         <script src="config/bundle.js"></script>
         <script src="scripts/app.js"></script>
+<script type="text/javascript">
+    app.initialize();
+</script>
         <script src="scripts/services/lbclient.js"></script>
         <script src="scripts/controllers/home.js"></script>
         <script src="scripts/controllers/user.js"></script>

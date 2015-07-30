@@ -18,4 +18,5 @@ angular.module('loopbackExampleFullStackApp')
   .value('RemoteTodo', client.models.RemoteTodo)
   .value('sync', client.sync)
   .value('network', client.network)
-  .value('getReadableModelId', client.getReadableModelId);
+  .value('proquint', client.proquint)
+  .value('Buffer', client.Buffer);
