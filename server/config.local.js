@@ -7,8 +7,8 @@ module.exports = {
   restApiRoot: GLOBAL_CONFIG.restApiRoot,
   livereload: process.env.LIVE_RELOAD,
   isDevEnv: isDevEnv,
-  indexFile: require.resolve(isDevEnv ?
-    '../client/ngapp/index.html' : '../client/dist/index.html'),
+  //indexFile: require.resolve(isDevEnv ? '../client/ngapp/index.html' : '../client/dist/index.html'),
+	indexFile: require.resolve(isDevEnv ? '../client/ionicApp/www/index.html' : '../client/dist/index.html'),
   port: GLOBAL_CONFIG.port,
   legacyExplorer: GLOBAL_CONFIG.legacyExplorer
 };
