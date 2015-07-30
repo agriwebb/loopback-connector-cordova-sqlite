@@ -23,3 +23,5 @@ public/bundle.js
 results
 server/datasources.local.js
 db.json
+/.project
+/.idea
