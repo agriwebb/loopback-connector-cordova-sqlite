@@ -2,7 +2,7 @@
   "name": "Todo",
   "base": "PersistedModel",
   "strict": "throw",
-  "persisteUndefinedAsNull": true,
+    "persistUndefinedAsNull": true,
   "trackChanges": true,
   "properties": {
     "id": {
@@ -16,7 +16,8 @@
       "default": false
     },
     "created": {
-      "type": "number"
+            "type": "number",
+            "dataType": "bigint"
     }
   }
 }
