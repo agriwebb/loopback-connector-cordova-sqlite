@@ -535,9 +535,26 @@ module.exports = function (grunt) {
         'build'
     ]);
 
-    grunt.registerTask('build-src', function () {
+    grunt.registerTask('quick-build', function () {
         grunt.log.write('Started running task build-src');
         grunt.task.run(['build-lbclient', 'build-config']);
         grunt.log.write('Done running task build-src');
+    });
+
+    grunt.registerTask('quick-serve', 'Compile then start the app server', function (target) {
+        if (target === 'dist') {
+            return grunt.task.run(['build', 'run:dist:keepalive']);
+        }
+
+        grunt.task.run([
+            'clean:server',
+//            'build-lbclient',
+//            'build-config',
+//            'wiredep',
+            'concurrent:server',
+            'autoprefixer',
+            'run:development',
+            'watch'
+        ]);
     });
 };
