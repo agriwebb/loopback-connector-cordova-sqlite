@@ -71,6 +71,7 @@
     "loopback-boot": "^2.0.0",
     "loopback-connector-mongodb": "^1.4.1",
     "loopback-connector-mysql": "^2.0.1",
+    "loopback-connector-sqlite": "file:connectors/loopback-connector-cordova-sqlite",
     "loopback-datasource-juggler": "^2.0.0",
     "loopback-explorer": "^1.2.4",
     "proquint": "0.0.1"
