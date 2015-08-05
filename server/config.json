@@ -1,3 +1,5 @@
 {
-  "host": "0.0.0.0"
+    "host.strongloop": "localhost:",
+    "host.boss": "0.0.0.0",
+    "host": "0.0.0.0"
 }
