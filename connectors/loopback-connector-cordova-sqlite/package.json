@@ -1,44 +1,28 @@
 {
-  "name": "loopback-connector-sqlite",
-  "version": "0.1.1",
-  "description": "LoopBack Connector for SQLite3 Database. LoopBack is an API Mgmt/MBaas platform built on top of express by StrongLoop. It supports the notion of connectors to connect to databases, restful web services, soap web services etc.",
+  "name": "loopback-connector-cordova-sqlite",
+  "version": "0.0.1",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter spec test --timeout 10000"
   },
   "repository": {
-    "type": "git",
-    "url": "https://github.com/Synerzip/loopback-connector-sqlite"
   },
   "keywords": [
-    "loopback",
-    "strongloop",
-    "connector",
-    "sqlite3"
   ],
   "author": {
-    "name": "Tushar Chauhan",
-    "email": "chauhan.tushar@gmail.com"
+    "name": "Boss",
+    "email": "bosco.dsouza.82@gmail.com"
   },
   "license": {
-    "name": "Apache License 2.0",
-    "url": "https://github.com/Synerzip/loopback-connector-sqlite/blob/master/LICENSE"
+    "name": "Apache License 2.0"
   },
   "bugs": {
-    "url": "https://github.com/Synerzip/loopback-connector-sqlite/issues"
   },
-  "homepage": "https://github.com/Synerzip/loopback-connector-sqlite",
+  "homepage": "",
   "dependencies": {
     "async": "^0.9.0",
     "loopback-connector": "^1.2.1",
     "loopback-datasource-juggler": "^2.23.0"
   },
-  "devDependencies": {},
-  "readme": "## loopback-connector-sqlite [![Build Status](https://travis-ci.org/Synerzip/loopback-connector-sqlite.svg)](https://travis-ci.org/Synerzip/loopback-connector-sqlite)\n[**LoopBack**](http://loopback.io/) is a highly-extensible, open-source Node.js framework that enables you to create dynamic end-to-end REST APIs with little or no coding. It also enables you to access data from major relational databases, MongoDB, SOAP and REST APIs.\n\n**loopback-connector-sqlite** is the SQLite3 connector module for [loopback-datasource-juggler](https://github.com/strongloop/loopback-datasource-juggler).\n\n## Basic usage\nYou will require [loopback-datasource-juggler](https://github.com/strongloop/loopback-datasource-juggler) and [node-sqlite3](https://github.com/mapbox/node-sqlite3) modules for using this connector.\nThe SQLite3 database can be configured to operate in 2 ways: with a DB file name and anonymous in-memory DB.\nThis connector needs 2 configuration parameters:\n* `file_name`(string): A file name for SQLite DB file. It can have any string value for file based SQLite usage and `null` for in-memory usage.\n* `debug`(boolean): Used for disabling and enabling logging.\n\nA DataSource with basic settings can be defined as shown below:\n```javascript\nvar DataSource = require('loopback-datasource-juggler').DataSource;\nvar dataSource = new DataSource(require('../index'), {\n  file_name: 'dev.sqlite3',\n  debug: false\n});\n```\n\nCheckout `examples\\example.js` to get the idea of basic usage.\nRun the example from the root directory as follows:\n```sh\nnode examples/example.js\n```\n\n## SQLite3 configuration for tests\nThe `.loopbackrc` file holds the settings for the tests. It's in JSON format and has following content:\n* For file based SQLite testing\n```JSON\n{\n  \"sqlite\": {\n    \"test\": {\n      \"file_name\": \"test.sqlite3\",\n      \"debug\": false\n    }\n  }\n}\n```\n* For anonymous in-memory SQLite testing\n```JSON\n{\n  \"sqlite\": {\n    \"test\": {\n      \"file_name\": null,\n      \"debug\": false\n    }\n  }\n}\n```\nThe `file_name` is the name of the sqlite3 DB file, which will be created, or, used if already present.\nThe `debug` value is to set debugging mode.\n\n## Running the tests\n* execute `npm install` for installing all the dependencies.\n* execute `npm test` to run all the tests.\n",
-  "readmeFilename": "README.md",
-  "gitHead": "51d0bd1796f30f9ec2d4dfb05d4894a054520193",
-  "_id": "loopback-connector-sqlite@0.1.1",
-  "_shasum": "31d67b09d29e8f5e4bf82f6a457ebe73788c4811",
-  "_from": "connectors/loopback-connector-sqlite",
-  "_resolved": "file:connectors/loopback-connector-sqlite"
+  "devDependencies": {}
 }
