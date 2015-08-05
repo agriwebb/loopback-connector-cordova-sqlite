@@ -16,11 +16,11 @@ if (window.cordova) {
 
     // { Create sqlite datasource programatically
 
-    client.sqlite = require('loopback-connector-sqlite');
+    client.sqlite = require('loopback-connector-cordova-sqlite');
 //    client.connector('sqlite', client.sqlite);
     localSQLiteDS = loopback.createDataSource('localSQLite', {
         connector: client.sqlite,
-        debug: true
+//        debug: true
     });
 
     // } --
