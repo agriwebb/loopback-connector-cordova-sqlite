@@ -92,7 +92,7 @@ module.exports = function (grunt) {
             options: {
 //          port.strongloop: 3000,
 //          hostname.strongloop: 'localhost', // Change this to '0.0.0.0' to access the server from outside.
-//          livereload.strongloop: 36729
+//          livereload.strongloop: 35729
 
 //          hostname.boss: '0.0.0.0',
 //          port.boss: 5100,
