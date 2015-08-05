@@ -7,6 +7,8 @@
   ],
   "license": "MIT",
   "private": true,
+  "appPath.strongloop": "client/ngapp",
+  "testPath.strongloop": "client/ngapp/test/spec",
   "appPath": "client/ionicApp/www",
   "testPath": "client/ionicApp/www/test/spec",
   "ignore": [
