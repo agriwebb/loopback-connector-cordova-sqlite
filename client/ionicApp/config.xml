@@ -7,8 +7,8 @@
   <author email="hi@ionicframework" href="http://ionicframework.com/">
         Ionic Framework Team
     </author>
-  <content src="preIndex.html"/>
-  <!--<content src="index.html"/>-->
+  <!--<content src="preIndex.html"/>-->
+  <content src="index.html"/>
   <access origin="*"/>
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
