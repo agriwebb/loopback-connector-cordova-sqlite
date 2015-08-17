@@ -71,8 +71,12 @@ SQLiteDB.prototype.connect = function (callback) {
 //    }
 //  });
 
-    client = self.sqlite3.openDatabase({name: "DB"});
-    callback(null, 'Connected');
+    client = self.sqlite3.openDatabase({name: "DB"}, function __successCB(result_a) {
+        callback(null, 'Connected');
+    }, function __errorCB(error_a) {
+        callback(error_a, null);
+    });
+//    callback(null, 'Connected');
 };
 
 SQLiteDB.prototype.getTypes = function onGetTypes() {
@@ -110,6 +114,10 @@ SQLiteDB.prototype.executeSQL = function (sql, params, callback) {
     }
 
     if (params.status && sql.startsWith('PRAGMA')) {
+        console.log("************ PRAGMA ERROR in sqlite3db.js - Boss ************");
+        console.log("************ PRAGMA ERROR in sqlite3db.js - Boss ************");
+        console.log("************ PRAGMA ERROR in sqlite3db.js - Boss ************");
+
         var stmt = client.prepare(sql);
         client.all(sql, function (err, rows) {
             // if(err) console.error(err);
@@ -162,33 +170,56 @@ SQLiteDB.prototype.executeSQL = function (sql, params, callback) {
 //        });
 
 
-        function iudcdQueryDB(tx) {
-            //tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
-            tx.executeSql(sql, params, iudcdQuerySuccess, iudcdErrorCB);
-        }
+//        function iudcdQueryDB(tx) {
+//            //tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
+//            tx.executeSql(sql, params, iudcdQuerySuccess, iudcdErrorCB);
+//        }
+//
+//        function iudcdQuerySuccess(tx, results) {
+//            var result;
+//            var data = results;
+//
+//            if (sql.startsWith('UPDATE') || sql.startsWith('DELETE')) {
+//                result = {count: data.changes};
+//            } else {
+//                result = data.lastID;
+//            }
+//
+//            console.log('aPASS ' + sqlStmtIndx_ + ': ' + sql);
+//            callback(null, result);
+//        }
+//
+//        function iudcdErrorCB(err) {
+////            alert("Error processing SQL: " + err.code);
+//
+//            console.log('aFAIL ' + sqlStmtIndx_ + ': ' + sql);
+//            callback(err, null);
+//        }
+//
+//        client.transaction(iudcdQueryDB, iudcdErrorCB);
+//        window.sqlStmtIndx++;
 
-        function iudcdQuerySuccess(tx, results) {
-            var result;
-            var data = results;
 
-            if (sql.startsWith('UPDATE') || sql.startsWith('DELETE')) {
-                result = {count: data.changes};
-            } else {
-                result = data.lastID;
-            }
+        client.transaction(function (tx_a) {
+            tx_a.executeSql(sql, params, function __qSCB(rtx_a, result_a) {
+                console.log('aPASS ' + sqlStmtIndx_ + ': ' + sql);
 
-            console.log('aPASS ' + sqlStmtIndx_ + ': ' + sql);
-            callback(null, result);
-        }
+                var result_;
+                if (sql.startsWith('UPDATE') || sql.startsWith('DELETE')) {
+//                    result_ = {count: result_a.changes};
+                    console.log("************ UPDATE/DELETE ERROR in sqlite3db.js - Boss ************");
+                    console.log("************ UPDATE/DELETE ERROR in sqlite3db.js - Boss ************");
+                    console.log("************ UPDATE/DELETE ERROR in sqlite3db.js - Boss ************");
+                } else {
+                    result_ = result_a.insertId;
+                }
+                callback(null, result_);
+            }, function __qECB(error_a) {
+                console.log('aFAIL ' + sqlStmtIndx_ + ': ' + sql);
+                callback(error_a, null);
+            });
+        });
 
-        function iudcdErrorCB(err) {
-//            alert("Error processing SQL: " + err.code);
-
-            console.log('aFAIL ' + sqlStmtIndx_ + ': ' + sql);
-            callback(err, null);
-        }
-
-        client.transaction(iudcdQueryDB, iudcdErrorCB);
         window.sqlStmtIndx++;
 
     } else {
@@ -205,34 +236,53 @@ SQLiteDB.prototype.executeSQL = function (sql, params, callback) {
         //
         //  callback(err ? err : null, rows);
         //});
-        function queryDB(tx) {
-            //tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
-            tx.executeSql(sql, params, querySuccess, errorCB);
-        }
 
-        function querySuccess(tx, results) {
-//            console.log("Returned rows = " + results.rows.length);
-            // this will be true since it was a select statement and so rowsAffected was 0
 
-//            if (!results.rowsAffected) {
-//                console.log('No rows affected!');
-//                return false;
-//            }
-//            // for an insert statement, this property will return the ID of the last inserted row
-//            console.log("Last inserted row ID = " + results.insertId);
+//        function queryDB(tx) {
+//            //tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
+//            tx.executeSql(sql, params, querySuccess, errorCB);
+//        }
+//
+//        function querySuccess(tx, results) {
+////            console.log("Returned rows = " + results.rows.length);
+//            // this will be true since it was a select statement and so rowsAffected was 0
+//
+////            if (!results.rowsAffected) {
+////                console.log('No rows affected!');
+////                return false;
+////            }
+////            // for an insert statement, this property will return the ID of the last inserted row
+////            console.log("Last inserted row ID = " + results.insertId);
+//
+//            console.log('bPASS ' + sqlStmtIndx_ + ': ' + sql);
+//            callback(null, results.row);
+//        }
+//
+//        function errorCB(err) {
+////            alert("Error processing SQL: " + err.code);
+//
+//            console.log('bFAIL ' + sqlStmtIndx_ + ': ' + sql);
+//            callback(err, null);
+//        }
+//
+//        client.transaction(queryDB, errorCB);
+//        window.sqlStmtIndx++;
 
-            console.log('bPASS ' + sqlStmtIndx_ + ': ' + sql);
-            callback(null, results.row);
-        }
+        client.transaction(function (tx) {
+            client.executeSql(sql, params, function __qSCB(result_a) {
+                console.log('bPASS ' + sqlStmtIndx_ + ': ' + sql);
 
-        function errorCB(err) {
-//            alert("Error processing SQL: " + err.code);
+                var data_ = [];
+                for (var i_ = 0; i_ < result_a.rows.length; i_++) {
+                    data_.push(result_a.rows.item(i_));
+                }
 
-            console.log('bFAIL ' + sqlStmtIndx_ + ': ' + sql);
-            callback(err, null);
-        }
-
-        client.transaction(queryDB, errorCB);
+                callback(null, data_);
+            }, function __qECB(error_a) {
+                console.log('bFAIL ' + sqlStmtIndx_ + ': ' + sql);
+                callback(error_a, null);
+            });
+        });
         window.sqlStmtIndx++;
     }
 };

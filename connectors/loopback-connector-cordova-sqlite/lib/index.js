@@ -54,7 +54,7 @@ exports.initialize = function initializeDataSource(dataSource, callback) {
 
         if (callback) {
             dataSource.connector.connect(callback);
-            process.nextTick(callback);
+//            process.nextTick(callback);
         }
     }
 };
