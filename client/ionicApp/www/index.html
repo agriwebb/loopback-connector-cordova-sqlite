@@ -66,7 +66,15 @@
 
 <script src="browser.bundle.js"></script>
 <script src="config/bundle.js"></script>
-<!--<script src="scripts/lefsApp.js"></script>-->
+
+<script src="scripts/lefsApp.js"></script>
+<!--<script src="scripts/services/lbclient.js"></script>-->
+<script src="scripts/controllers/home.js"></script>
+<script src="scripts/controllers/user.js"></script>
+<script src="scripts/controllers/todo.js"></script>
+<script src="scripts/controllers/login.js"></script>
+<script src="scripts/controllers/register.js"></script>
+<script src="scripts/controllers/change.js"></script>
 
 <script type="text/javascript">
     app.initialize();
@@ -91,18 +99,26 @@
 //        loadjscssfile("myscript.js", "js") //dynamically load and add this .js file
 //        loadjscssfile("mystyle.css", "css") ////dynamically load and add this .css file
 
-        setTimeout(function () {
+//        setTimeout(function () {
 //            loadjscssfile("browser.bundle.js", "js");
 //            loadjscssfile("config/bundle.js", "js");
-            loadjscssfile("scripts/lefsApp.js", "js");
+
+//            loadjscssfile("scripts/lefsApp.js", "js");
+
             loadjscssfile("scripts/services/lbclient.js", "js");
-            loadjscssfile("scripts/controllers/home.js", "js");
-            loadjscssfile("scripts/controllers/user.js", "js");
-            loadjscssfile("scripts/controllers/todo.js", "js");
-            loadjscssfile("scripts/controllers/login.js", "js");
-            loadjscssfile("scripts/controllers/register.js", "js");
-            loadjscssfile("scripts/controllers/change.js", "js");
-        }, 0);
+//            loadjscssfile("scripts/controllers/home.js", "js");
+//            loadjscssfile("scripts/controllers/user.js", "js");
+//            loadjscssfile("scripts/controllers/todo.js", "js");
+//            loadjscssfile("scripts/controllers/login.js", "js");
+//            loadjscssfile("scripts/controllers/register.js", "js");
+//            loadjscssfile("scripts/controllers/change.js", "js");
+//        }, 0);
+
+        angular.element(document).ready(function() {
+            setTimeout(function () {
+                angular.bootstrap(document, ['loopbackExampleFullStackApp']);
+            }, 100);
+        });
     }
 
     //    Reference: http://www.javascriptkit.com/javatutors/loadjavascriptcss.shtml
@@ -111,16 +127,16 @@
             var fileref = document.createElement('script')
             fileref.setAttribute("type", "text/javascript");
             fileref.setAttribute("src", filename);
-//            fileref.setAttribute("async", false);
-            fileref.async = false;
+            fileref.setAttribute("async", false);
+//            fileref.async = false;
         }
         else if (filetype == "css") { //if filename is an external CSS file
             var fileref = document.createElement("link")
             fileref.setAttribute("rel", "stylesheet");
             fileref.setAttribute("type", "text/css");
             fileref.setAttribute("href", filename);
-//            fileref.setAttribute("async", false);
-            fileref.async = false;
+            fileref.setAttribute("async", false);
+//            fileref.async = false;
         }
         if (typeof fileref != "undefined") {
             document.getElementsByTagName("head")[0].appendChild(fileref)

@@ -12,9 +12,9 @@
 //var lefsApp = angular.module('loopbackExampleFullStackApp', ['ngRoute', 'ionic']);
 var lefsApp = angular.module('loopbackExampleFullStackApp', ['ngRoute']);
 
-angular.element(document).ready(function() {
-    angular.bootstrap(document, ['loopbackExampleFullStackApp']);
-});
+//angular.element(document).ready(function() {
+//    angular.bootstrap(document, ['loopbackExampleFullStackApp']);
+//});
 
 lefsApp.config(function ($routeProvider /*, $locationProvider */) {
     Object.keys(window.CONFIG.routes)
