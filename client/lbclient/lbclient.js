@@ -23,54 +23,56 @@ if (window.cordova) {
 //        debug: true
     });
 
-    // } --
 
-    // {
-    // Attach relevant models to the newly created sqite datasource.
-    // Need to see if all candidate models can be elegantly attached,
-    // without having to name each model separately.
+    localSQLiteDS.on('connected', function() {
+        // {
+        // Attach relevant models to the newly created sqite datasource.
+        // Need to see if all candidate models can be elegantly attached,
+        // without having to name each model separately.
 
 //    client.models.LocalTodo.attachTo(client.dataSources.localSQLite);
-    client.models.LocalTodo.attachTo(localSQLiteDS);
+        client.models.LocalTodo.attachTo(localSQLiteDS);
 
-    // } --
-
-
+        // } --
 
 
-    // { automigrate or autoupdate, whichever!
-    //var localSqlite = client.datasources.localSQLite;
-    var localSqlite = localSQLiteDS;
+
+
+        // { automigrate or autoupdate, whichever!
+        //var localSqlite = client.datasources.localSQLite;
+        var localSqlite = localSQLiteDS;
 //var db = app.dataSources.db;
 //var mysqlDs = app.dataSources.mysqlDs;
 //var mongodbDs = app.dataSources.mongodbDs;
 
 
-    function createSchema(dataSource_a) {
+        function createSchema(dataSource_a) {
 //    dataSource_a.autoupdate(function (error_a) {
-        dataSource_a.automigrate(null, function (error_a) {
+            dataSource_a.automigrate(null, function (error_a) {
 
-            if (error_a) {
-                console.log("Error in autoupdate!");
-            }
-            else {
-                console.log("Done!");
+                if (error_a) {
+                    console.log("Error in autoupdate!");
+                }
+                else {
+                    console.log("Done!");
 //            dataSource_a.disconnect();
-            }
-        });
-    }
+                }
+            });
+        }
 
-    createSchema(localSqlite);
-    // } --
+        createSchema(localSqlite);
+        // } --
 
 
-    // { Close DB on app going into background, need to check for app close as well.
-    document.addEventListener("pause", function handleAppClose() {
+        // { Close DB on app going into background, need to check for app close as well.
+        document.addEventListener("pause", function handleAppClose() {
 //        client.datasources.localSQLite.disconnect();
-        localSqlite.disconnect();
-    }, false);
-    // } --
+            localSqlite.disconnect();
+        }, false);
+        // } --
+    });
 
+    // } --
 }
 else {
     // { In Desktop mode, depend on local storage, instead of sqlite.
