@@ -97,7 +97,11 @@ SQLiteDB.prototype.ping = function (cb) {
     this.query('SELECT 100 AS result', [], cb);
 };
 
-SQLiteDB.prototype.executeSQL = function (sql, params, callback) {
+SQLiteDB.prototype.executeSQL = function (sql, params, options, callback) {
+
+    if(callback === undefined && typeof options === 'function') {
+        callback = options;
+    }
 
     window.sqlStmtIndx = window.sqlStmtIndx || 0;
     var sqlStmtIndx_ = window.sqlStmtIndx; // cache this value for use in closure, since window.sqlStmtIndx is updated by multiple closures, and hence reports incorrect value when logged.
@@ -143,6 +147,16 @@ SQLiteDB.prototype.executeSQL = function (sql, params, callback) {
         });
     } else if (sql.startsWith('INSERT') || sql.startsWith('UPDATE') ||
         sql.startsWith('DELETE') || sql.startsWith('CREATE') || sql.startsWith('DROP')) {
+
+        /** /
+         if(params.length > 0) {
+      for(var i = 0; i < params.length; i++) {
+        if(typeof params[i] === 'object' && params[i] !== null && !(params[i] instanceof Date)){
+          params[i] = JSON.stringify(params[i]);
+        }
+      }
+    }
+         /**/
 
 //        client.run(sql, params, function (err) {
 //            // if(err) console.error(err);
@@ -280,7 +294,7 @@ SQLiteDB.prototype.executeSQL = function (sql, params, callback) {
                 callback(null, data_);
             }, function __qECB(error_a) {
                 console.log('bFAIL ' + sqlStmtIndx_ + ': ' + sql);
-                callback(error_a, null);
+                callback(null, data);
             });
         });
         window.sqlStmtIndx++;
@@ -294,7 +308,6 @@ SQLiteDB.prototype.query = function (sql, params, callback) {
         params = [];
     }
 
-    params = params || [];
 
     for (var i = 0; i < params.length; i++) {
         if (typeof params[i] == 'object') {
@@ -305,9 +318,7 @@ SQLiteDB.prototype.query = function (sql, params, callback) {
         }
     }
 
-    var cb = callback || function (err, result) {
-    };
-    this.executeSQL(sql, params, cb);
+    this.executeSQL(sql, params, callback);
 };
 
 
@@ -343,9 +354,9 @@ function getTableStatus(model, cb) {
 
     var sql = null;
     sql = 'PRAGMA table_info(' + this.table(model) + ')';
-    var params = {}
+    var params = [];
     params.status = true;
-    this.query(sql, params, decoratedCallback);
+    this.executeSQL(sql, params, decoratedCallback);
 }
 
 function mapSQLiteDatatypes(typeName) {
@@ -468,7 +479,7 @@ function getAddModifyColumns(model, actualFields) {
 function getDropColumns(model, actualFields) {
     var sql = [];
     var self = this;
-    sql = sql.concat(getColumnsToDrop.call(self, model, actualFields));
+    // sql = sql.concat(getColumnsToDrop.call(self, model, actualFields));
     return sql;
 }
 
@@ -485,9 +496,6 @@ function getColumnsToAdd(model, actualFields) {
             sql.push('ADD COLUMN ' + addPropertyToActual.call(self, model, propName));
         }
     });
-    if (sql.length > 0) {
-        sql = [sql.join(', ')];
-    }
 
     return sql;
 }
@@ -621,7 +629,7 @@ function applySqlChanges(model, pendingChanges, cb) {
         var ranOnce = false;
         pendingChanges.forEach(function (change) {
             if (ranOnce) {
-                thisQuery = thisQuery + ' ';
+                thisQuery = thisQuery + '; ';
             }
             thisQuery = thisQuery + ' ' + change;
             ranOnce = true;
@@ -637,7 +645,7 @@ function applySqlChanges(model, pendingChanges, cb) {
  * @param {String} model The model name
  * @returns {String}
  */
-SQLiteDB.prototype.propertiesSQL = function (model) {
+SQLiteDB.prototype.buildColumnDefinitions = SQLiteDB.prototype.propertiesSQL = function (model) {
     var self = this;
     var sql = [];
     var pks = this.idNames(model).map(function (i) {
@@ -645,7 +653,7 @@ SQLiteDB.prototype.propertiesSQL = function (model) {
     });
     Object.keys(this._models[model].properties).forEach(function (prop) {
         var colName = self.columnEscaped(model, prop);
-        sql.push(colName + ' ' + self.propertySettingsSQL(model, prop));
+        sql.push(colName + ' ' + self.buildColumnDefinition(model, prop));
     });
     if (pks.length > 0) {
         sql.push('PRIMARY KEY(' + pks.join(',') + ')');
@@ -660,7 +668,7 @@ SQLiteDB.prototype.propertiesSQL = function (model) {
  * @param {String} propName The property name
  * @returns {*|string}
  */
-SQLiteDB.prototype.propertySettingsSQL = function (model, propName) {
+SQLiteDB.prototype.buildColumnDefinition = function (model, propName) {
     var self = this;
     if (this.id(model, propName) && this._models[model].properties[propName].generated) {
         return 'INTEGER';
@@ -777,10 +785,20 @@ SQLiteDB.prototype.toDatabase = function (prop, val) {
             return this.toDatabase(prop, val[0]) + ' AND ' + this.toDatabase(prop, val[1]);
         }
         if (operator === 'inq' || operator === 'nin') {
+            // { Boss
+            // We should not be storing the 'escaped' val[i] back into val[i],
+            // as that breaks the working Change.diff function,
+            // and this in turns breaks the replication from Remote Source to Local Target.
+            // Hence, the use of additional array variable, escapedValArray_ to preserve the original val[i].
+            // } --
+            var escapedValArray_ = [];
+            // } --
             for (var i = 0; i < val.length; i++) {
-                val[i] = escape(val[i]);
+                // val[i] = escape(val[i]);
+                escapedValArray_.push(escape(val[i]));
             }
-            return val.join(',');
+            // return val.join(',');
+            return escapedValArray_.join(',');
         }
         return this.toDatabase(prop, val);
     }
@@ -942,7 +960,7 @@ SQLiteDB.prototype.create = function create(model, data, callback) {
             return callback(err);
         }
 
-        callback(err, lastUpdatedID);
+        callback(err, data[idColName] || lastUpdatedID);
     });
 };
 
@@ -973,7 +991,7 @@ SQLiteDB.prototype.save = function (model, data, callback) {
 };
 
 SQLiteDB.prototype.update =
-    SQLiteDB.prototype.updateAll = function (model, where, data, callback) {
+    SQLiteDB.prototype.updateAll = function (model, where, data, options, callback) {
         var whereClause = this.buildWhere(model, where);
 
         var sql = ['UPDATE ', this.tableEscaped(model), ' SET ',
@@ -1091,13 +1109,22 @@ SQLiteDB.prototype.getColumns = function (model, props) {
  * @param {String|Error} err The error string or object
  * @param {Object[]} The matched model instances
  */
-SQLiteDB.prototype.all = function all(model, filter, callback) {
+SQLiteDB.prototype.all = function all(model, filter, options, callback) {
     var self = this;
 
+    if (callback === undefined && options === undefined && typeof filter === 'function') {
+        callback = filter;
+        filter = [];
+        options = {};
+    }
+    if (callback === undefined && typeof options === 'function') {
+        callback = options;
+        options = {};
+    }
     // SQLite has a characterstic of sorting the resultset by 'id'
     // So, we reset the resutset to mimic the normal resultset
     // 'ORDER BY' is only performed when explicitely asked.
-    filter = filter || {};
+    filter = filter || [];
     if (!filter.order) {
         var idNames = this.idNames(model);
         if (idNames && idNames.length) {
@@ -1108,7 +1135,8 @@ SQLiteDB.prototype.all = function all(model, filter, callback) {
             if (filter.order == 'id' && filter.where.id != undefined) {
                 if (filter.where.id.inq != undefined) {
                     for (var i = 0; i < filter.where.id.inq.length; i++) {
-                        self.current_order.push(filter.where.id.inq[i])
+                        if(self.current_order.indexOf(filter.where.id.inq[i]) < 0 )
+                            self.current_order.push(filter.where.id.inq[i]);
                     }
                 }
             }
@@ -1157,10 +1185,15 @@ SQLiteDB.prototype.all = function all(model, filter, callback) {
 /**
  * Delete all model instances
  */
-SQLiteDB.prototype.destroyAll = function destroyAll(model, where, callback) {
-    if (!callback && 'function' === typeof where) {
+SQLiteDB.prototype.destroyAll = function destroyAll(model, where, options, callback) {
+    if (!callback && !options && 'function' === typeof where) {
         callback = where;
+        options = undefined;
         where = undefined;
+    }
+    if (!callback && 'function' === typeof options) {
+        callback = options;
+        options = undefined;
     }
     this.query('DELETE FROM '
         + ' ' + this.toFilter(model, where && {where: where}), function (err, data) {
