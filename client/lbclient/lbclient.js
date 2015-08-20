@@ -12,6 +12,7 @@ boot(client);
 
 var localSQLiteDS = null;
 
+//if (window.cordova && false) {
 if (window.cordova) {
 
     // { Create sqlite datasource programatically
@@ -25,6 +26,7 @@ if (window.cordova) {
 
 
     localSQLiteDS.on('connected', function() {
+        console.log("SQLite Connected!");
         // {
         // Attach relevant models to the newly created sqite datasource.
         // Need to see if all candidate models can be elegantly attached,

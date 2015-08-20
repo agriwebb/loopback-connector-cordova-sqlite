@@ -32,6 +32,7 @@ module.exports = function(client) {
       since.push,
       function pushed(err, conflicts, cps) {
         since.push = cps;
+
         RemoteTodo.replicate(
           LocalTodo,
           since.pull,

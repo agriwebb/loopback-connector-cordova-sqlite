@@ -1,23 +1,23 @@
 {
-  "name": "Todo",
-  "base": "PersistedModel",
-  "strict": "throw",
+    "name": "Todo",
+    "base": "PersistedModel",
+    "strict": "throw",
     "persistUndefinedAsNull": true,
-  "trackChanges": true,
-  "properties": {
-    "id": {
-      "id": true,
-      "type": "string",
-      "defaultFn": "guid"
-    },
-    "title": "string",
-    "completed": {
-      "type": "boolean",
-      "default": false
-    },
-    "created": {
+    "trackChanges": true,
+    "properties": {
+        "id": {
+            "id": true,
+            "type": "string",
+            "defaultFn": "guid"
+        },
+        "title": "string",
+        "completed": {
+            "type": "boolean",
+            "default": false
+        },
+        "created": {
             "type": "number",
             "dataType": "bigint"
+        }
     }
-  }
 }
