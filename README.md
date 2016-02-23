@@ -1,10 +1,10 @@
-## loopback-connector-sqlite [![Build Status](https://travis-ci.org/Synerzip/loopback-connector-sqlite.svg)](https://travis-ci.org/Synerzip/loopback-connector-sqlite)
+## loopback-connector-cordova-sqlite [![Build Status](https://travis-ci.org/Synerzip/loopback-connector-cordova-sqlite.svg)](https://travis-ci.org/Synerzip/loopback-connector-cordova-sqlite)
 [**LoopBack**](http://loopback.io/) is a highly-extensible, open-source Node.js framework that enables you to create dynamic end-to-end REST APIs with little or no coding. It also enables you to access data from major relational databases, MongoDB, SOAP and REST APIs.
 
-**loopback-connector-sqlite** is the SQLite3 connector module for [loopback-datasource-juggler](https://github.com/strongloop/loopback-datasource-juggler).
+**loopback-connector-cordova-sqlite** is the (cordova) SQLite3 connector module for [loopback-datasource-juggler](https://github.com/strongloop/loopback-datasource-juggler).
 
 ## Basic usage
-You will require [loopback-datasource-juggler](https://github.com/strongloop/loopback-datasource-juggler) and [node-sqlite3](https://github.com/mapbox/node-sqlite3) modules for using this connector.
+You will require [loopback-datasource-juggler](https://github.com/strongloop/loopback-datasource-juggler) and the [SQLite Cordova plugin (io.litehelpers.cordova.sqlite)](https://github.com/litehelpers/Cordova-sqlite-storage.git) modules for using this connector.
 The SQLite3 database can be configured to operate in 2 ways: with a DB file name and anonymous in-memory DB.
 This connector needs 2 configuration parameters:
 * `file_name`(string): A file name for SQLite DB file. It can have any string value for file based SQLite usage and `null` for in-memory usage.
@@ -55,3 +55,6 @@ The `debug` value is to set debugging mode.
 ## Running the tests
 * execute `npm install` for installing all the dependencies.
 * execute `npm test` to run all the tests.
+
+## Credits
+* boscodsouza82 for creating the loopback-example-offline-sync for use with Cordova after a discussion on [issue 858 on loopback](https://github.com/strongloop/loopback/issues/858#issuecomment-122853602)
