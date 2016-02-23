@@ -1,169 +1,57 @@
-# loopback-example-offline-sync
+## loopback-connector-sqlite [![Build Status](https://travis-ci.org/Synerzip/loopback-connector-sqlite.svg)](https://travis-ci.org/Synerzip/loopback-connector-sqlite)
+[**LoopBack**](http://loopback.io/) is a highly-extensible, open-source Node.js framework that enables you to create dynamic end-to-end REST APIs with little or no coding. It also enables you to access data from major relational databases, MongoDB, SOAP and REST APIs.
 
-**Note: this example uses `loopback@2.0.0` and `loopback-boot@2.0.0`!**
+**loopback-connector-sqlite** is the SQLite3 connector module for [loopback-datasource-juggler](https://github.com/strongloop/loopback-datasource-juggler).
 
-An example running LoopBack in the browser and server, demonstrating the
-following features:
+## Basic usage
+You will require [loopback-datasource-juggler](https://github.com/strongloop/loopback-datasource-juggler) and [node-sqlite3](https://github.com/mapbox/node-sqlite3) modules for using this connector.
+The SQLite3 database can be configured to operate in 2 ways: with a DB file name and anonymous in-memory DB.
+This connector needs 2 configuration parameters:
+* `file_name`(string): A file name for SQLite DB file. It can have any string value for file based SQLite usage and `null` for in-memory usage.
+* `debug`(boolean): Used for disabling and enabling logging.
 
- - offline data access and synchronization
- - routes shared between the AngularJS app and the HTTP server
+A DataSource with basic settings can be defined as shown below:
+```javascript
+var DataSource = require('loopback-datasource-juggler').DataSource;
+var dataSource = new DataSource(require('../index'), {
+  file_name: 'dev.sqlite3',
+  debug: false
+});
+```
 
-## Install and Run
+Checkout `examples\example.js` to get the idea of basic usage.
+Run the example from the root directory as follows:
+```sh
+node examples/example.js
+```
 
-0. You must have `node` and `git` installed. It's recommended to have `mongod`
-   installed too, so that the data is preserved across app restarts.
-
-1. Clone the repo.
-
-2. `cd loopback-example-offline-sync`
-
-3. `npm install` - install the root package dependencies
-
-4. `npm install grunt-cli -g` - skip if you have grunt-cli already installed
-
-5. `npm install bower -g` - skip if you have bower already installed
-
-6. `bower install` - install front-end scripts
-
-7. `mongod` - make sure mongodb is running if you want to run with
-`NODE_ENV=production`
-
-8. `grunt serve` - build and run the entire project in development mode
-
-9. open `http://localhost:3000` - point a browser at the running app
-
-## Project layout
-
-The project is composed from multiple components.
-
- - `models/` contains definition of models that are shared by both the server
-  and the client.
-
- - `rest/` contains the REST API server, it exposes the shared models via
-  REST API.
-
- - `lbclient/` provides an isomorphic loopback client with offline sync.
-  The client needs some client-only models for data synchronization, these
-  models are defined in `lbclient/models/`.
-
- - `ngapp/` is a single-page AngularJS application scaffolded using `yo
-  angular`, with few modification to make it work better in the full-stack
-  project.
-
- - `server/` is the main HTTP server that brings together all other components.
-
-## Build
-
-This project uses [Grunt](http://gruntjs.com) for the build, since that's what
-`yo angular` creates.
-
-There are three major changes from the vanilla Gruntfile required for this
-full-stack example:
-
- - `grunt serve` uses the `server/` component instead of `grunt connect`.
-
- - `lbclient` component provides a custom build script (`lbclient/build.js`)
-   which runs `browserify` to produce a single js file to be used in the
-   browser. The Gruntfile contains a custom task to run this build.
-
- - The definition of Angular routes is kept in a standalone JSON file
-   that is used by the `server/` component too. To make this JSON file
-   available in the browser, there is a custom task that builds
-   `ngapp/config/bundle.js`.
-
-### Targets
-
- - `grunt serve` starts the app in development mode, watching for file changes
-  and automatically reloading the app.
- - `grunt test` runs automated tests (only the front-end has tests at the
-   moment).
- - `grunt build` creates the bundle for deploying to production.
- - `grunt serve:dist` starts the app serving the production bundle of the
-   front-end SPA.
- - `grunt jshint` checks consistency of the coding style.
-
-## Adding more features
-
-#### Define a new shared model
-
-The instructions assume the name of the new model is 'MyModel'.
-
- 1. Create a file `models/my-model.json`, put the model definition there.
-  Use `models/todo.json` as an example, see
-  [loopback-boot docs](http://apidocs.strongloop.com/loopback-boot) for
-  more details about the file format.
-
- 2. (Optional) Add `models/my-model.js` and implement your custom model
-  methods. See `models/todo.js` for an example.
-
- 3. Add an entry to `rest/models.json` to configure the new model in the REST
-  server:
-
-    ```json
-    {
-      "MyModel": {
-        "dataSource": "db"
-      }
+## SQLite3 configuration for tests
+The `.loopbackrc` file holds the settings for the tests. It's in JSON format and has following content:
+* For file based SQLite testing
+```JSON
+{
+  "sqlite": {
+    "test": {
+      "file_name": "test.sqlite3",
+      "debug": false
     }
-    ```
-
- 4. Define a client-only model to represent the remote server model in the
-  client - create `lbclient/models/my-model.json` with the following content:
-
-    ```json
-    {
-      "name": "RemoteMyModel",
-      "base": "MyModel"
+  }
+}
+```
+* For anonymous in-memory SQLite testing
+```JSON
+{
+  "sqlite": {
+    "test": {
+      "file_name": null,
+      "debug": false
     }
-    ```
+  }
+}
+```
+The `file_name` is the name of the sqlite3 DB file, which will be created, or, used if already present.
+The `debug` value is to set debugging mode.
 
- 5. Add two entries to `lbclient/models.json` to configure the new models
-  for the client:
-
-    ```json
-    {
-      "MyModel": {
-        "dataSource": "local"
-      },
-      "RemoteMyModel": {
-        "dataSource": "remote"
-      }
-    }
-    ```
-
- 6. Register the local model with Angular's injector in
-  `ngapp/scripts/services/lbclient.js`:
-
-    ```js
-      .value('MyModel', app.models.LocalMyModel)
-    ```
-
-### Create a new Angular route
-
-Since the full-stack example project shares the routes between the client and
-the server, the new route cannot be added using the yeoman generator.
-
-Instructions:
-
- 1. (Optional) Create a new angular controller using yeoman, e.g.
-
-    ```sh
-    $ yo angular:controller MyModel
-    ```
-
- 2. (Optional) Create a new angular view using yeoman, e.g.
-
-    ```sh
-    $ yo angular:view models
-    ```
-
- 3. Add a route entry to `ngapp/config/routes.json`, e.g.:
-
-    ```json
-    {
-      "/models": {
-        "controller": "MymodelCtrl",
-        "templateUrl": "/views/models.html"
-      }
-    }
-    ```
+## Running the tests
+* execute `npm install` for installing all the dependencies.
+* execute `npm test` to run all the tests.

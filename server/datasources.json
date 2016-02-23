@@ -1,6 +1,0 @@
-{
-  "db.strongloop": {
-    "connector": "memory",
-    "defaultForType": "db"
-  }
-}
