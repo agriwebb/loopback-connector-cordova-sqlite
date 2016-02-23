@@ -1,5 +1,0 @@
-{
-  "directory.strongloop": "client/ngapp/bower_components",
-  "directory.boss": "client/ionicApp/www/bower_components",
-  "directory": "client/ionicApp/www/bower_components"
-}
