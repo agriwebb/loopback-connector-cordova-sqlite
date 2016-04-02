@@ -1,30 +1,44 @@
 {
   "name": "loopback-connector-cordova-sqlite",
   "version": "0.0.1",
-  "description": "",
+  "description": "LoopBack connector for SQLite under Cordova",
   "main": "index.js",
-  "scripts": {},
-  "repository": {},
-  "keywords": [],
+  "scripts": {
+    "test": "mocha --reporter spec test --timeout 10000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jouke/loopback-connector-cordova-sqlite"
+  },
+  "keywords": [
+    "Strongloop",
+    "Loopback",
+    "Connector",
+    "Cordova",
+    "Phonegap",
+    "Ionic",
+    "SQLite",
+    "SQLite3"
+  ],
   "author": {
-    "name": "Boss",
-    "email": "bosco.dsouza.82@gmail.com"
+    "name": "Jouke Visser",
+    "email": "jouke@studio-mv.nl"
   },
-  "license": {
-    "name": "Apache License 2.0"
-  },
+  "license": "Apache License 2.0",
   "bugs": {},
-  "homepage": "",
-  "dependencies.old": {
-    "async": "^0.9.0",
-    "loopback-connector": "^1.2.1",
-    "loopback-datasource-juggler": "^2.23.0"
-  },
+  "homepage": "https://github.com/jouke/loopback-connector-cordova-sqlite",
   "dependencies": {
     "async": "^0.9.0",
     "debug": "^2.2.0",
     "loopback-connector": "^2.1.0",
     "loopback-datasource-juggler": "^2.23.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "chai": "^2.1.2",
+    "karma": "^0.13.22",
+    "loopback-datasource-juggler": "~2.45.1",
+    "mocha": "^2.1.0",
+    "rc": "^1.0.1",
+    "should": "^8.0.2"
+  }
 }

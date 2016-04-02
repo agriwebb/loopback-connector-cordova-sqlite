@@ -1,8 +1,9 @@
 {
   "sqlite": {
     "test": {
-      "file_name": "./test.sqlite3",
-      "debug": false
-    }
+        "name"         : "cordova-sqlite",
+        "file_name"    : "test.sqlite",
+        "debug"        : false
+      }
   }
 }

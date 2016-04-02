@@ -64,35 +64,3 @@ describe("SQLite Model creation test", function(){
   });
 
 });
-      if(err != null){
-        console.log(err);
-      }
-      db.connector.disconnect();
-      done();
-    });
-  });
-
-  it('should run auto-migration', function (done) {
-    db.automigrate('User', function () {
-      done();
-    });
-  });
-
-  it('should create users', function(done){
-    var users = [{name: "John", email: "john@test.com"}, {name: "Doe", email: "doe@test.com"}];
-
-    for(var i=0; i<users.length; i++) {
-      User.create(users[i], function(err, u){
-        expect(err).to.not.be.undefined;
-        expect(err).to.be.null;
-        if(u.id == 1)
-          expect(u.name).to.be.equal("John");
-        else if(u.id == 2) {
-          expect(u.name).to.be.equal("Doe");
-          done();
-        }
-      });
-    }
-  });
-
-});
