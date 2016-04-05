@@ -11,7 +11,8 @@ module.exports = function(config) {
       plugins: [
         'cordova-sqlite-storage',
         'org.apache.cordova.console'
-      ]
+      ],
+      init: 'window.frames[0].cordova = window.cordova; window.frames[0].sqlitePlugin = window.sqlitePlugin;'
     },
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -20,7 +21,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha'],
+    frameworks: ['jasmine'],
 
 
     // list of files / patterns to load in the browser
