@@ -7,10 +7,10 @@ module.exports = function(config) {
       platforms: ['ios'],
       mode: 'emulate',
       hostip: 'localhost',
-      target: 'iPad-Air',
+      target: 'iPhone-SE',
       plugins: [
         'cordova-sqlite-storage',
-        'org.apache.cordova.console'
+        'cordova-plugin-console'
       ],
       init: 'window.frames[0].cordova = window.cordova; window.frames[0].sqlitePlugin = window.sqlitePlugin;'
     },
