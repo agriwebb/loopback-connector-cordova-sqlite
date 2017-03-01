@@ -1,6 +1,6 @@
 {
   "name": "loopback-connector-cordova-sqlite",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "LoopBack connector for SQLite under Cordova",
   "main": "index.js",
   "scripts": {
