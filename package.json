@@ -31,7 +31,7 @@
     "async": "^0.9.0",
     "debug": "^2.2.0",
     "loopback-connector": "^2.1.0",
-    "loopback-datasource-juggler": "^2.23.0"
+    "loopback-datasource-juggler": "git+ssh://git@github.com:agriwebb/loopback-datasource-juggler.git#agriwebb-merge"
   },
   "devDependencies": {
     "jasmine-core": "^2.4.1",
@@ -39,7 +39,7 @@
     "karma-cordova-launcher": "0.0.9",
     "karma-jasmine": "^0.3.8",
     "karma-mocha": "^0.2.2",
-    "loopback-datasource-juggler": "~2.45.1",
+    "loopback-datasource-juggler": "git+ssh://git@github.com:agriwebb/loopback-datasource-juggler.git#agriwebb-merge",
     "mocha": "^2.1.0",
     "rc": "^1.0.1",
     "should": "^8.0.2"
